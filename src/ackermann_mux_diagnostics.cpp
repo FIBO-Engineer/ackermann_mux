@@ -18,12 +18,12 @@
  * @author Enrique Fernandez
  */
 
-#include <twist_mux/twist_mux_diagnostics.h>
-#include <twist_mux/twist_mux_diagnostics_status.h>
+#include <ackermann_mux/ackermann_mux_diagnostics.h>
+#include <ackermann_mux/ackermann_mux_diagnostics_status.h>
 
 #include <diagnostic_updater/diagnostic_updater.h>
 
-namespace twist_mux
+namespace ackermann_mux
 {
 
 TwistMuxDiagnostics::TwistMuxDiagnostics()
@@ -92,4 +92,4 @@ void TwistMuxDiagnostics::diagnostics(diagnostic_updater::DiagnosticStatusWrappe
   ROS_DEBUG_THROTTLE(1.0, "Publishing diagnostics.");
 }
 
-} // namespace twist_mux
+} // namespace ackermann_mux

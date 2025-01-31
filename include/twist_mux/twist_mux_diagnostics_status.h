@@ -21,12 +21,12 @@
 #ifndef TWIST_MUX_DIAGNOSTICS_STATUS_H
 #define TWIST_MUX_DIAGNOSTICS_STATUS_H
 
-#include <twist_mux/twist_mux.h>
-#include <twist_mux/topic_handle.h>
+#include <ackermann_mux/ackermann_mux.h>
+#include <ackermann_mux/topic_handle.h>
 
 #include <ros/time.h>
 
-namespace twist_mux
+namespace ackermann_mux
 {
 
 struct TwistMuxDiagnosticsStatus
@@ -55,6 +55,6 @@ struct TwistMuxDiagnosticsStatus
 typedef TwistMuxDiagnosticsStatus::Ptr      TwistMuxDiagnosticsStatusPtr;
 typedef TwistMuxDiagnosticsStatus::ConstPtr TwistMuxDiagnosticsStatusConstPtr;
 
-} // namespace twist_mux
+} // namespace ackermann_mux
 
 #endif // TWIST_MUX_DIAGNOSTICS_STATUS_H

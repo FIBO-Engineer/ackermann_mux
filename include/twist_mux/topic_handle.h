@@ -26,8 +26,8 @@
 #include <std_msgs/Bool.h>
 #include <geometry_msgs/Twist.h>
 
-#include <twist_mux/utils.h>
-#include <twist_mux/twist_mux.h>
+#include <ackermann_mux/utils.h>
+#include <ackermann_mux/ackermann_mux.h>
 
 #include <boost/utility.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 
-namespace twist_mux
+namespace ackermann_mux
 {
 
 template<typename T>
@@ -139,10 +139,10 @@ protected:
   T msg_;
 };
 
-class VelocityTopicHandle : public TopicHandle_<geometry_msgs::Twist>
+class VelocityTopicHandle : public TopicHandle_<ackermann_msgs::AckermannDrive>
 {
 private:
-  typedef TopicHandle_<geometry_msgs::Twist> base_type;
+  typedef TopicHandle_<ackermann_msgs::AckermannDrive> base_type;
 
 public:
   typedef typename base_type::priority_type priority_type;
@@ -158,12 +158,12 @@ public:
     return hasExpired() || (getPriority() < lock_priority);
   }
 
-  void callback(const geometry_msgs::TwistConstPtr& msg)
+  void callback(const ackermann_msgs::AckermannDriveConstPtr& msg)
   {
     stamp_ = ros::Time::now();
     msg_   = *msg;
 
-    // Check if this twist has priority.
+    // Check if this ackermann has priority.
     // Note that we have to check all the locks because they might time out
     // and since we have several topics we must look for the highest one in
     // all the topic list; so far there's no O(1) solution.
@@ -204,6 +204,6 @@ public:
   }
 };
 
-} // namespace twist_mux
+} // namespace ackermann_mux
 
 #endif // TOPIC_HANDLE_H

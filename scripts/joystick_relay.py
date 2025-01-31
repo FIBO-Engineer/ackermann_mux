@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# twist_mux: joystick_relay.py
+# ackermann_mux: joystick_relay.py
 #
 # Copyright (c) 2013 PAL Robotics SL. All Rights Reserved
 #
@@ -11,7 +11,7 @@
 
 import rospy
 import actionlib
-from twist_mux_msgs.msg import JoyPriorityAction, JoyTurboAction
+from ackermann_mux_msgs.msg import JoyPriorityAction, JoyTurboAction
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 from visualization_msgs.msg import Marker
@@ -86,7 +86,7 @@ class VelocityControl:
             self._init_step = init_step
         self.reset_turbo()
 
-    def validate_twist(self, cmd):
+    def validate_ackermann(self, cmd):
         if cmd.linear.z or cmd.angular.x or cmd.angular.y:
             rospy.logerr("Joystick provided invalid values, only linear.x, linear.y and angular.z may be non-zero.")
             return False
@@ -95,16 +95,16 @@ class VelocityControl:
             return False
         return True
 
-    def scale_twist(self, cmd):
-        twist = Twist()
-        if self.validate_twist(cmd):
+    def scale_ackermann(self, cmd):
+        ackermann = Twist()
+        if self.validate_ackermann(cmd):
             if cmd.linear.x >= 0:
-                twist.linear.x = self._forward(cmd.linear.x, self._current_step)
+                ackermann.linear.x = self._forward(cmd.linear.x, self._current_step)
             else:
-                twist.linear.x = self._backward(cmd.linear.x, self._current_step)
-            twist.linear.y = self._lateral(cmd.linear.y, self._current_step)
-            twist.angular.z = self._angular(cmd.angular.z, self._current_angular_step)
-        return twist
+                ackermann.linear.x = self._backward(cmd.linear.x, self._current_step)
+            ackermann.linear.y = self._lateral(cmd.linear.y, self._current_step)
+            ackermann.angular.z = self._angular(cmd.angular.z, self._current_angular_step)
+        return ackermann
 
     def increase_turbo(self):
         if self._current_step < self._num_steps:
@@ -202,7 +202,7 @@ class JoystickRelay:
 
     def _forward_cmd(self, cmd):
         if self._current_priority:
-            self._pub_cmd.publish(self._velocity_control.scale_twist(cmd))
+            self._pub_cmd.publish(self._velocity_control.scale_ackermann(cmd))
 
         self._marker.update(self._current_priority)
 

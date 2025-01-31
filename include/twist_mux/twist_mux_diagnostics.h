@@ -21,14 +21,14 @@
 #ifndef TWIST_MUX_DIAGNOSTICS_H
 #define TWIST_MUX_DIAGNOSTICS_H
 
-#include <twist_mux/twist_mux_diagnostics_status.h>
+#include <ackermann_mux/ackermann_mux_diagnostics_status.h>
 
 #include <diagnostic_updater/diagnostic_updater.h>
 #include <ros/ros.h>
 
 #include <boost/shared_ptr.hpp>
 
-namespace twist_mux
+namespace ackermann_mux
 {
 
 class TwistMuxDiagnostics
@@ -64,6 +64,6 @@ class TwistMuxDiagnostics
     status_type                 status_;
 };
 
-} // namespace twist_mux
+} // namespace ackermann_mux
 
 #endif // TWIST_MUX_DIAGNOSTICS_H

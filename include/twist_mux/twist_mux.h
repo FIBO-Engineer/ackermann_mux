@@ -28,7 +28,7 @@
 
 #include <list>
 
-namespace twist_mux
+namespace ackermann_mux
 {
 
 // Forwarding declarations:
@@ -38,7 +38,7 @@ class VelocityTopicHandle;
 class LockTopicHandle;
 
 /**
- * @brief The TwistMux class implements a top-level twist multiplexer module
+ * @brief The TwistMux class implements a top-level ackermann multiplexer module
  * that priorize different velocity command topic inputs according to locks.
  */
 class TwistMux
@@ -55,9 +55,9 @@ public:
   TwistMux(int window_size = 10);
   ~TwistMux();
 
-  bool hasPriority(const VelocityTopicHandle& twist);
+  bool hasPriority(const VelocityTopicHandle& ackermann);
 
-  void publishTwist(const geometry_msgs::TwistConstPtr& msg);
+  void publishTwist(const ackermann_msgs::AckermannDriveConstPtr& msg);
 
   void updateDiagnostics(const ros::TimerEvent& event);
 
@@ -84,7 +84,7 @@ protected:
 
   ros::Publisher cmd_pub_;
 
-  geometry_msgs::Twist last_cmd_;
+  ackermann_msgs::AckermannDrive last_cmd_;
 
   template<typename T>
   void getTopicHandles(ros::NodeHandle& nh, ros::NodeHandle& nh_priv, const std::string& param_name, std::list<T>& topic_hs);
@@ -95,6 +95,6 @@ protected:
   boost::shared_ptr<status_type>      status_;
 };
 
-} // namespace twist_mux
+} // namespace ackermann_mux
 
 #endif // TWIST_MUX_H

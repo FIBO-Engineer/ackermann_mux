@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# twist_mux: system_blackbox.py
+# ackermann_mux: system_blackbox.py
 #
 # Copyright (c) 2014 PAL Robotics SL.
 # All Rights Reserved
@@ -30,7 +30,7 @@ from geometry_msgs.msg import Twist
 
 from rate_publishers import RatePublishers, TimeoutManager
 
-def twist(x=0.0, r=0.0):
+def ackermann(x=0.0, r=0.0):
     """
     Returns a Twist for the given linear and rotation speed.
     """
@@ -64,7 +64,7 @@ class TestTwistMux(unittest.TestCase):
 
     def tearDown(self):
         # Reset all topics.
-        t = twist(0, 0)
+        t = ackermann(0, 0)
         l = Bool(False)
 
         self._vel1.pub(t)
@@ -75,7 +75,7 @@ class TestTwistMux(unittest.TestCase):
         self._lock2.pub(l)
 
         # Wait for previously published messages to time out,
-        # since we aren't restarting twist_mux.
+        # since we aren't restarting ackermann_mux.
         #
         # This sleeping time must be higher than any of the
         # timeouts in system_test_config.yaml.
@@ -90,24 +90,24 @@ class TestTwistMux(unittest.TestCase):
     def test_empty(self):
         try:
             self._vel_cmd()
-            self.fail('twist_mux should not be publishing without any input')
+            self.fail('ackermann_mux should not be publishing without any input')
         except rospy.ROSException:
             pass
 
     def test_basic(self):
-        t = twist(2.0)
+        t = ackermann(2.0)
         self._vel1.pub(t, rate=5)
         self.assertEqual(t, self._vel_cmd())
 
     def test_basic_with_priorities(self):
-        t1 = twist(2.0)
-        t2 = twist(0, 1.0)
+        t1 = ackermann(2.0)
+        t2 = ackermann(0, 1.0)
 
-        # Publish twist from input1 @ 3Hz, it should be used.
+        # Publish ackermann from input1 @ 3Hz, it should be used.
         self._vel1.pub(t1, rate=5)
         self.assertEqual(t1, self._vel_cmd())
 
-        # Publish twist from input3, it should have priority
+        # Publish ackermann from input3, it should have priority
         # over the one from input1.
         self._vel3.pub(t2, rate=10)
         self.assertEqual(t2, self._vel_cmd())
@@ -122,7 +122,7 @@ class TestTwistMux(unittest.TestCase):
 
 if __name__ == '__main__':
     import rostest
-    PKG_NAME = 'twist_mux'
+    PKG_NAME = 'ackermann_mux'
     TEST_NAME = '%s_system_blackbox_test' % PKG_NAME
     rospy.init_node(TEST_NAME)
     rostest.rosrun(PKG_NAME, TEST_NAME, TestTwistMux)

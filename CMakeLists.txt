@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(twist_mux)
+project(ackermann_mux)
 
 find_package(catkin REQUIRED
     COMPONENTS
@@ -20,17 +20,17 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(twist_mux
-    src/twist_mux.cpp
-    src/twist_mux_node.cpp
-    src/twist_mux_diagnostics.cpp)
-target_link_libraries(twist_mux ${catkin_LIBRARIES})
+add_executable(ackermann_mux
+    src/ackermann_mux.cpp
+    src/ackermann_mux_node.cpp
+    src/ackermann_mux_diagnostics.cpp)
+target_link_libraries(ackermann_mux ${catkin_LIBRARIES})
 
-add_executable(twist_marker
-    src/twist_marker.cpp)
-target_link_libraries(twist_marker ${catkin_LIBRARIES})
+add_executable(ackermann_marker
+    src/ackermann_marker.cpp)
+target_link_libraries(ackermann_marker ${catkin_LIBRARIES})
 
-install(TARGETS twist_mux twist_marker
+install(TARGETS ackermann_mux ackermann_marker
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 catkin_install_python(PROGRAMS scripts/joystick_relay.py

@@ -41,7 +41,7 @@ public:
     // Frame ID:
     marker_.header.frame_id = frame_id_;
 
-    // Pre-allocate points for setting the arrow with the twist:
+    // Pre-allocate points for setting the arrow with the ackermann:
     marker_.points.resize(2);
 
     // Vertical position:
@@ -58,17 +58,17 @@ public:
     marker_.color.b = 0.0;
   }
 
-  void update(const geometry_msgs::Twist& twist)
+  void update(const ackermann_msgs::AckermannDrive& ackermann)
   {
-    marker_.points[1].x = twist.linear.x;
+    marker_.points[1].x = ackermann.linear.x;
 
-    if (fabs(twist.linear.y) > fabs(twist.angular.z))
+    if (fabs(ackermann.linear.y) > fabs(ackermann.angular.z))
     {
-      marker_.points[1].y = twist.linear.y;
+      marker_.points[1].y = ackermann.linear.y;
     }
     else
     {
-      marker_.points[1].y = twist.angular.z;
+      marker_.points[1].y = ackermann.angular.z;
     }
   }
 
@@ -95,12 +95,12 @@ public:
     ros::NodeHandle nh;
 
     pub_ = nh.advertise<visualization_msgs::Marker>("marker", 1, true);
-    sub_ = nh.subscribe("twist", 1, &TwistMarkerPublisher::callback, this);
+    sub_ = nh.subscribe("ackermann", 1, &TwistMarkerPublisher::callback, this);
   }
 
-  void callback(const geometry_msgs::TwistConstPtr& twist)
+  void callback(const ackermann_msgs::AckermannDriveConstPtr& ackermann)
   {
-    marker_.update(*twist);
+    marker_.update(*ackermann);
 
     pub_.publish(marker_.getMarker());
   }
@@ -115,7 +115,7 @@ private:
 int
 main(int argc, char *argv[])
 {
-  ros::init(argc, argv, "twist_marker");
+  ros::init(argc, argv, "ackermann_marker");
 
   TwistMarkerPublisher t(1.0, 2.0);
 

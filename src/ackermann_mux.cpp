@@ -35,14 +35,10 @@
  */
 bool hasIncreasedAbsVelocity(const ackermann_msgs::AckermannDrive& old_ackermann, const ackermann_msgs::AckermannDrive& new_ackermann)
 {
-  const auto old_linear_x = std::abs(old_ackermann.linear.x);
-  const auto new_linear_x = std::abs(new_ackermann.linear.x);
+  const auto old_linear_x = std::abs(old_ackermann.speed);
+  const auto new_linear_x = std::abs(new_ackermann.speed);
 
-  const auto old_angular_z = std::abs(old_ackermann.angular.z);
-  const auto new_angular_z = std::abs(new_ackermann.angular.z);
-
-  return (old_linear_x  < new_linear_x ) ||
-         (old_angular_z < new_angular_z);
+  return (old_linear_x  < new_linear_x );
 }
 
 namespace ackermann_mux

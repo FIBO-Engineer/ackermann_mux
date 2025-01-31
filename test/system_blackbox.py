@@ -39,7 +39,7 @@ def ackermann(x=0.0, r=0.0):
     t.angular.z = r
     return t
 
-class TestTwistMux(unittest.TestCase):
+class TestAckermannMux(unittest.TestCase):
 
     # Maximum time (in seconds) that it may take for a message
     # to be received by the target node.
@@ -125,4 +125,4 @@ if __name__ == '__main__':
     PKG_NAME = 'ackermann_mux'
     TEST_NAME = '%s_system_blackbox_test' % PKG_NAME
     rospy.init_node(TEST_NAME)
-    rostest.rosrun(PKG_NAME, TEST_NAME, TestTwistMux)
+    rostest.rosrun(PKG_NAME, TEST_NAME, TestAckermannMux)

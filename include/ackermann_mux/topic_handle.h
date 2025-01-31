@@ -24,7 +24,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
-#include <geometry_msgs/Twist.h>
+#include <ackermann_msgs/AckermannDrive.h>
 
 #include <ackermann_mux/utils.h>
 #include <ackermann_mux/ackermann_mux.h>
@@ -55,7 +55,7 @@ public:
    * expired
    * @param priority Priority of the topic
    */
-  TopicHandle_(ros::NodeHandle& nh, const std::string& name, const std::string& topic, double timeout, priority_type priority, TwistMux* mux)
+  TopicHandle_(ros::NodeHandle& nh, const std::string& name, const std::string& topic, double timeout, priority_type priority, AckermannMux* mux)
     : nh_(nh)
     , name_(name)
     , topic_(topic)
@@ -133,7 +133,7 @@ protected:
   priority_type priority_;
 
 protected:
-  TwistMux* mux_;
+  AckermannMux* mux_;
 
   ros::Time stamp_;
   T msg_;
@@ -147,7 +147,7 @@ private:
 public:
   typedef typename base_type::priority_type priority_type;
 
-  VelocityTopicHandle(ros::NodeHandle& nh, const std::string& name, const std::string& topic, double timeout, priority_type priority, TwistMux* mux)
+  VelocityTopicHandle(ros::NodeHandle& nh, const std::string& name, const std::string& topic, double timeout, priority_type priority, AckermannMux* mux)
     : base_type(nh, name, topic, timeout, priority, mux)
   {
     subscriber_ = nh_.subscribe(topic_, 1, &VelocityTopicHandle::callback, this);
@@ -182,7 +182,7 @@ private:
 public:
   typedef typename base_type::priority_type priority_type;
 
-  LockTopicHandle(ros::NodeHandle& nh, const std::string& name, const std::string& topic, double timeout, priority_type priority, TwistMux* mux)
+  LockTopicHandle(ros::NodeHandle& nh, const std::string& name, const std::string& topic, double timeout, priority_type priority, AckermannMux* mux)
     : base_type(nh, name, topic, timeout, priority, mux)
   {
     subscriber_ = nh_.subscribe(topic_, 1, &LockTopicHandle::callback, this);

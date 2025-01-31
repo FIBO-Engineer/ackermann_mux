@@ -27,7 +27,7 @@ main(int argc, char *argv[])
 {
   ros::init(argc, argv, "ackermann_mux");
 
-  ackermann_mux::TwistMux mux;
+  ackermann_mux::AckermannMux mux;
 
   while (ros::ok())
   {

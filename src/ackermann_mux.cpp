@@ -48,7 +48,7 @@ bool hasIncreasedAbsVelocity(const ackermann_msgs::AckermannDrive& old_ackermann
 namespace ackermann_mux
 {
 
-TwistMux::TwistMux(int window_size)
+AckermannMux::AckermannMux(int window_size)
 {
   ros::NodeHandle nh;
   ros::NodeHandle nh_priv("~");
@@ -68,25 +68,25 @@ TwistMux::TwistMux(int window_size)
   status_->velocity_hs = velocity_hs_;
   status_->lock_hs     = lock_hs_;
 
-  diagnostics_timer_ = nh.createTimer(ros::Duration(DIAGNOSTICS_PERIOD), &TwistMux::updateDiagnostics, this);
+  diagnostics_timer_ = nh.createTimer(ros::Duration(DIAGNOSTICS_PERIOD), &AckermannMux::updateDiagnostics, this);
 }
 
-TwistMux::~TwistMux()
+AckermannMux::~AckermannMux()
 {}
 
-void TwistMux::updateDiagnostics(const ros::TimerEvent& event)
+void AckermannMux::updateDiagnostics(const ros::TimerEvent& event)
 {
   status_->priority = getLockPriority();
   diagnostics_->updateStatus(status_);
 }
 
-void TwistMux::publishTwist(const ackermann_msgs::AckermannDriveConstPtr& msg)
+void AckermannMux::publishTwist(const ackermann_msgs::AckermannDriveConstPtr& msg)
 {
   cmd_pub_.publish(*msg);
 }
 
 template<typename T>
-void TwistMux::getTopicHandles(ros::NodeHandle& nh, ros::NodeHandle& nh_priv, const std::string& param_name, std::list<T>& topic_hs)
+void AckermannMux::getTopicHandles(ros::NodeHandle& nh, ros::NodeHandle& nh_priv, const std::string& param_name, std::list<T>& topic_hs)
 {
   try
   {
@@ -115,7 +115,7 @@ void TwistMux::getTopicHandles(ros::NodeHandle& nh, ros::NodeHandle& nh_priv, co
   }
 }
 
-int TwistMux::getLockPriority()
+int AckermannMux::getLockPriority()
 {
   LockTopicHandle::priority_type priority = 0;
 
@@ -138,7 +138,7 @@ int TwistMux::getLockPriority()
   return priority;
 }
 
-bool TwistMux::hasPriority(const VelocityTopicHandle& ackermann)
+bool AckermannMux::hasPriority(const VelocityTopicHandle& ackermann)
 {
   const auto lock_priority = getLockPriority();
 

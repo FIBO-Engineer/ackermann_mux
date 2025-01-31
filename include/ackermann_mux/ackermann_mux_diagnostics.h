@@ -31,16 +31,16 @@
 namespace ackermann_mux
 {
 
-class TwistMuxDiagnostics
+class AckermannMuxDiagnostics
 {
   public:
-    typedef TwistMuxDiagnosticsStatus status_type;
+    typedef AckermannMuxDiagnosticsStatus status_type;
 
     static constexpr double MAIN_LOOP_TIME_MIN = 0.2; // [s]
     static constexpr double READING_AGE_MIN    = 3.0; // [s]
 
-    TwistMuxDiagnostics();
-    virtual ~TwistMuxDiagnostics();
+    AckermannMuxDiagnostics();
+    virtual ~AckermannMuxDiagnostics();
 
     void diagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat);
 

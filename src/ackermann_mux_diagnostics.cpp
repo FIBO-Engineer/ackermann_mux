@@ -26,21 +26,21 @@
 namespace ackermann_mux
 {
 
-TwistMuxDiagnostics::TwistMuxDiagnostics()
+AckermannMuxDiagnostics::AckermannMuxDiagnostics()
 {
-  diagnostic_.add("Twist mux status", this, &TwistMuxDiagnostics::diagnostics);
+  diagnostic_.add("Twist mux status", this, &AckermannMuxDiagnostics::diagnostics);
   diagnostic_.setHardwareID("none");
 }
 
-TwistMuxDiagnostics::~TwistMuxDiagnostics()
+AckermannMuxDiagnostics::~AckermannMuxDiagnostics()
 {}
 
-void TwistMuxDiagnostics::update()
+void AckermannMuxDiagnostics::update()
 {
   diagnostic_.update();
 }
 
-void TwistMuxDiagnostics::updateStatus(const status_type::ConstPtr& status)
+void AckermannMuxDiagnostics::updateStatus(const status_type::ConstPtr& status)
 {
   ROS_DEBUG_THROTTLE(1.0, "Updating status.");
 
@@ -54,7 +54,7 @@ void TwistMuxDiagnostics::updateStatus(const status_type::ConstPtr& status)
   update();
 }
 
-void TwistMuxDiagnostics::diagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat)
+void AckermannMuxDiagnostics::diagnostics(diagnostic_updater::DiagnosticStatusWrapper& stat)
 {
   /// Check if the loop period is quick enough
   if (status_.main_loop_time > MAIN_LOOP_TIME_MIN)

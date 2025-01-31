@@ -24,7 +24,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
-#include <geometry_msgs/Twist.h>
+#include <ackermann_msgs/AckermannDrive.h>
 
 #include <list>
 
@@ -32,16 +32,16 @@ namespace ackermann_mux
 {
 
 // Forwarding declarations:
-class TwistMuxDiagnostics;
-struct TwistMuxDiagnosticsStatus;
+class AckermannMuxDiagnostics;
+struct AckermannMuxDiagnosticsStatus;
 class VelocityTopicHandle;
 class LockTopicHandle;
 
 /**
- * @brief The TwistMux class implements a top-level ackermann multiplexer module
+ * @brief The AckermannMux class implements a top-level ackermann multiplexer module
  * that priorize different velocity command topic inputs according to locks.
  */
-class TwistMux
+class AckermannMux
 {
 public:
 
@@ -52,8 +52,8 @@ public:
   typedef std::list<VelocityTopicHandle> velocity_topic_container;
   typedef std::list<LockTopicHandle>     lock_topic_container;
 
-  TwistMux(int window_size = 10);
-  ~TwistMux();
+  AckermannMux(int window_size = 10);
+  ~AckermannMux();
 
   bool hasPriority(const VelocityTopicHandle& ackermann);
 
@@ -63,8 +63,8 @@ public:
 
 protected:
 
-  typedef TwistMuxDiagnostics       diagnostics_type;
-  typedef TwistMuxDiagnosticsStatus status_type;
+  typedef AckermannMuxDiagnostics       diagnostics_type;
+  typedef AckermannMuxDiagnosticsStatus status_type;
 
   ros::Timer diagnostics_timer_;
 

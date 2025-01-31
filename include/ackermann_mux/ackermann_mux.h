@@ -19,8 +19,8 @@
  * @author Siegfried Gevatter
  */
 
-#ifndef TWIST_MUX_H
-#define TWIST_MUX_H
+#ifndef ACKERMANN_MUX_H
+#define ACKERMANN_MUX_H
 
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
@@ -57,7 +57,7 @@ public:
 
   bool hasPriority(const VelocityTopicHandle& ackermann);
 
-  void publishTwist(const ackermann_msgs::AckermannDriveConstPtr& msg);
+  void publishAckermann(const ackermann_msgs::AckermannDriveConstPtr& msg);
 
   void updateDiagnostics(const ros::TimerEvent& event);
 
@@ -97,4 +97,4 @@ protected:
 
 } // namespace ackermann_mux
 
-#endif // TWIST_MUX_H
+#endif // ACKERMANN_MUX_H

@@ -18,8 +18,8 @@
  * @author Enrique Fernandez
  */
 
-#ifndef TWIST_MUX_DIAGNOSTICS_STATUS_H
-#define TWIST_MUX_DIAGNOSTICS_STATUS_H
+#ifndef ACKERMANN_MUX_DIAGNOSTICS_STATUS_H
+#define ACKERMANN_MUX_DIAGNOSTICS_STATUS_H
 
 #include <ackermann_mux/ackermann_mux.h>
 #include <ackermann_mux/topic_handle.h>
@@ -57,4 +57,4 @@ typedef AckermannMuxDiagnosticsStatus::ConstPtr AckermannMuxDiagnosticsStatusCon
 
 } // namespace ackermann_mux
 
-#endif // TWIST_MUX_DIAGNOSTICS_STATUS_H
+#endif // ACKERMANN_MUX_DIAGNOSTICS_STATUS_H

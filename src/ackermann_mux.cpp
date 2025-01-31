@@ -80,7 +80,7 @@ void AckermannMux::updateDiagnostics(const ros::TimerEvent& event)
   diagnostics_->updateStatus(status_);
 }
 
-void AckermannMux::publishTwist(const ackermann_msgs::AckermannDriveConstPtr& msg)
+void AckermannMux::publishAckermann(const ackermann_msgs::AckermannDriveConstPtr& msg)
 {
   cmd_pub_.publish(*msg);
 }

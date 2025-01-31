@@ -26,17 +26,17 @@ import unittest
 
 import rospy
 from std_msgs.msg import Bool
-from geometry_msgs.msg import Twist
+from ackermann_msgs.msg import AckermannDrive
 
 from rate_publishers import RatePublishers, TimeoutManager
 
 def ackermann(x=0.0, r=0.0):
     """
-    Returns a Twist for the given linear and rotation speed.
+    Returns a AckermannDrive for the given linear and rotation speed.
     """
-    t = Twist()
-    t.linear.x = x
-    t.angular.z = r
+    t = AckermannDrive()
+    t.linear = x
+    t.steering_angle = r
     return t
 
 class TestAckermannMux(unittest.TestCase):
@@ -51,9 +51,9 @@ class TestAckermannMux(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._publishers = RatePublishers()
-        cls._vel1 = cls._publishers.add_topic('vel_1', Twist)
-        cls._vel2 = cls._publishers.add_topic('vel_2', Twist)
-        cls._vel3 = cls._publishers.add_topic('vel_3', Twist)
+        cls._vel1 = cls._publishers.add_topic('vel_1', AckermannDrive)
+        cls._vel2 = cls._publishers.add_topic('vel_2', AckermannDrive)
+        cls._vel3 = cls._publishers.add_topic('vel_3', AckermannDrive)
 
         cls._lock1 = cls._publishers.add_topic('lock_1', Bool)
         cls._lock2 = cls._publishers.add_topic('lock_2', Bool)
@@ -84,7 +84,7 @@ class TestAckermannMux(unittest.TestCase):
     @classmethod
     def _vel_cmd(cls):
         rospy.sleep(cls.MESSAGE_TIMEOUT)
-        return rospy.wait_for_message('cmd_vel_out', Twist,
+        return rospy.wait_for_message('cmd_vel_out', AckermannDrive,
                                       timeout=cls.MESSAGE_TIMEOUT)
 
     def test_empty(self):

@@ -3,7 +3,7 @@
   <name>ackermann_mux</name>
   <version>3.1.3</version>
   <description>
-      Twist multiplexer, which multiplex several velocity commands (topics) and
+      Ackermann multiplexer, which multiplex several velocity commands (topics) and
       allows to priorize or disable them (locks).
   </description>
 

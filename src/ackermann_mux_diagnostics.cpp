@@ -28,7 +28,7 @@ namespace ackermann_mux
 
 AckermannMuxDiagnostics::AckermannMuxDiagnostics()
 {
-  diagnostic_.add("Twist mux status", this, &AckermannMuxDiagnostics::diagnostics);
+  diagnostic_.add("Ackermann mux status", this, &AckermannMuxDiagnostics::diagnostics);
   diagnostic_.setHardwareID("none");
 }
 

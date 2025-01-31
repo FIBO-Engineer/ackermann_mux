@@ -12,7 +12,7 @@
 import rospy
 import actionlib
 from ackermann_mux_msgs.msg import JoyPriorityAction, JoyTurboAction
-from geometry_msgs.msg import Twist
+from ackermann_msgs.msg import AckermannDrive
 from std_msgs.msg import Bool
 from visualization_msgs.msg import Marker
 
@@ -96,7 +96,7 @@ class VelocityControl:
         return True
 
     def scale_ackermann(self, cmd):
-        ackermann = Twist()
+        ackermann = AckermannDrive()
         if self.validate_ackermann(cmd):
             if cmd.linear.x >= 0:
                 ackermann.linear.x = self._forward(cmd.linear.x, self._current_step)
@@ -173,8 +173,8 @@ class JoystickRelay:
 
         self._marker = TextMarker(0.5, 2.0)
 
-        self._pub_cmd = rospy.Publisher('joy_vel_out', Twist, queue_size=1)
-        self._subscriber = rospy.Subscriber('joy_vel_in', Twist, self._forward_cmd, queue_size=1)
+        self._pub_cmd = rospy.Publisher('joy_vel_out', AckermannDrive, queue_size=1)
+        self._subscriber = rospy.Subscriber('joy_vel_in', AckermannDrive, self._forward_cmd, queue_size=1)
 
         self._pub_priority = rospy.Publisher('joy_priority', Bool, queue_size=1, latch=True)
 
@@ -214,7 +214,7 @@ class JoystickRelay:
 
         # Reset velocity to 0:
         if self._current_priority:
-            self._pub_cmd.publish(Twist())
+            self._pub_cmd.publish(AckermannDrive())
 
     def _timer_callback(self, event):
         self._marker.update(self._current_priority)

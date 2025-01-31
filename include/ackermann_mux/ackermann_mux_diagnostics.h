@@ -18,8 +18,8 @@
  * @author Enrique Fernandez
  */
 
-#ifndef TWIST_MUX_DIAGNOSTICS_H
-#define TWIST_MUX_DIAGNOSTICS_H
+#ifndef ACKERMANN_MUX_DIAGNOSTICS_H
+#define ACKERMANN_MUX_DIAGNOSTICS_H
 
 #include <ackermann_mux/ackermann_mux_diagnostics_status.h>
 
@@ -66,4 +66,4 @@ class AckermannMuxDiagnostics
 
 } // namespace ackermann_mux
 
-#endif // TWIST_MUX_DIAGNOSTICS_H
+#endif // ACKERMANN_MUX_DIAGNOSTICS_H

@@ -25,11 +25,11 @@
 
 #include <string>
 
-class TwistMarker
+class AckermannMarker
 {
 public:
 
-  TwistMarker(double scale = 1.0, double z = 0.0, const std::string& frame_id = "base_footprint")
+  AckermannMarker(double scale = 1.0, double z = 0.0, const std::string& frame_id = "base_footprint")
     : frame_id_(frame_id)
     , scale_(scale)
     , z_(z)
@@ -60,16 +60,8 @@ public:
 
   void update(const ackermann_msgs::AckermannDrive& ackermann)
   {
-    marker_.points[1].x = ackermann.linear.x;
-
-    if (fabs(ackermann.linear.y) > fabs(ackermann.angular.z))
-    {
-      marker_.points[1].y = ackermann.linear.y;
-    }
-    else
-    {
-      marker_.points[1].y = ackermann.angular.z;
-    }
+    marker_.points[1].x = ackermann.speed;
+    marker_.points[1].y = ackermann.steering_angle;
   }
 
   const visualization_msgs::Marker& getMarker()
@@ -85,17 +77,17 @@ private:
   double z_;
 };
 
-class TwistMarkerPublisher
+class AckermannMarkerPublisher
 {
 public:
 
-  TwistMarkerPublisher(double scale = 1.0, double z = 0.0)
+  AckermannMarkerPublisher(double scale = 1.0, double z = 0.0)
     : marker_(scale, z)
   {
     ros::NodeHandle nh;
 
     pub_ = nh.advertise<visualization_msgs::Marker>("marker", 1, true);
-    sub_ = nh.subscribe("ackermann", 1, &TwistMarkerPublisher::callback, this);
+    sub_ = nh.subscribe("ackermann", 1, &AckermannMarkerPublisher::callback, this);
   }
 
   void callback(const ackermann_msgs::AckermannDriveConstPtr& ackermann)
@@ -109,7 +101,7 @@ private:
   ros::Subscriber sub_;
   ros::Publisher  pub_;
 
-  TwistMarker marker_;
+  AckermannMarker marker_;
 };
 
 int
@@ -117,7 +109,7 @@ main(int argc, char *argv[])
 {
   ros::init(argc, argv, "ackermann_marker");
 
-  TwistMarkerPublisher t(1.0, 2.0);
+  AckermannMarkerPublisher t(1.0, 2.0);
 
   while (ros::ok())
   {

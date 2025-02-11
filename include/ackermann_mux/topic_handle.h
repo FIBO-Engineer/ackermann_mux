@@ -162,14 +162,42 @@ public:
   {
     stamp_ = ros::Time::now();
     msg_   = *msg;
-
+  
+    ROS_INFO_STREAM("[" << name_ << "] Received message with timestamp: " << stamp_);
+  
     // Check if this ackermann has priority.
     // Note that we have to check all the locks because they might time out
     // and since we have several topics we must look for the highest one in
     // all the topic list; so far there's no O(1) solution.
+  
     if (mux_->hasPriority(*this))
     {
+      // ROS_INFO_STREAM("[" << name_ << "] This topic has priority.");
+      mux_->setHasSentZero(false);
       mux_->publishAckermann(msg);
+      mux_->send_zero_timer_ = nh_.createTimer(ros::Duration(timeout_), [this](const ros::TimerEvent& event) {
+        publish_zero_velocity();
+        // ROS_INFO_STREAM("[" << name_ << "] Zero velocity published after timeout.");
+      }, true);
+    } 
+    else if (mux_->isTopPriorityVelocityTopic(*this) && !mux_->hasSentZero()) 
+    {
+      // ROS_INFO_STREAM("[" << name_ << "] This topic is top priority but has not sent zero velocity.");
+      publish_zero_velocity();
+      mux_->setHasSentZero(true);
+    }
+    else
+    {
+      // ROS_INFO_STREAM("[" << name_ << "] This topic does not have priority.");
+    }
+  }
+
+  void publish_zero_velocity() const
+  {
+    if(!mux_->hasSentZero()) {
+      ackermann_msgs::AckermannDriveConstPtr zero_vel_msg(boost::make_shared<ackermann_msgs::AckermannDrive>());
+      mux_->publishAckermann(zero_vel_msg);
+      mux_->setHasSentZero(true);
     }
   }
 };

@@ -159,4 +159,34 @@ bool AckermannMux::hasPriority(const VelocityTopicHandle& ackermann)
   return ackermann.getName() == velocity_name;
 }
 
+bool AckermannMux::isTopPriorityVelocityTopic(const VelocityTopicHandle& ackermann)
+{
+  std::string velocity_name = "NULL";
+  LockTopicHandle::priority_type priority = 0;
+  /// max_element on the priority of velocity topic handles satisfying
+  /// that is NOT masked by the lock priority:
+  for (const auto& velocity_h : *velocity_hs_)
+  {
+    const auto velocity_priority = velocity_h.getPriority();
+    if (priority < velocity_priority)
+    {
+      priority = velocity_priority;
+      velocity_name = velocity_h.getName();
+    }
+  }
+
+  return ackermann.getName() == velocity_name;
+}
+
+bool AckermannMux::hasSentZero() const
+{
+  return has_sent_zero_;
+}
+
+
+void AckermannMux::setHasSentZero(bool has_sent_zero)
+{
+  has_sent_zero_ = has_sent_zero;
+}
+
 } // namespace ackermann_mux

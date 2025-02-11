@@ -57,9 +57,17 @@ public:
 
   bool hasPriority(const VelocityTopicHandle& ackermann);
 
+  bool isTopPriorityVelocityTopic(const VelocityTopicHandle& ackermann);
+
   void publishAckermann(const ackermann_msgs::AckermannDriveConstPtr& msg);
 
   void updateDiagnostics(const ros::TimerEvent& event);
+
+  bool hasSentZero() const;
+
+  void setHasSentZero(bool sent_zero);
+
+  ros::Timer send_zero_timer_;
 
 protected:
 
@@ -93,6 +101,7 @@ protected:
 
   boost::shared_ptr<diagnostics_type> diagnostics_;
   boost::shared_ptr<status_type>      status_;
+  bool has_sent_zero_;
 };
 
 } // namespace ackermann_mux

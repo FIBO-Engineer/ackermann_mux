@@ -163,7 +163,7 @@ public:
     stamp_ = ros::Time::now();
     msg_   = *msg;
   
-    ROS_INFO_STREAM("[" << name_ << "] Received message with timestamp: " << stamp_);
+    // ROS_INFO_STREAM("[" << name_ << "] Received message with timestamp: " << stamp_);
   
     // Check if this ackermann has priority.
     // Note that we have to check all the locks because they might time out

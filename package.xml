@@ -26,7 +26,7 @@
   <run_depend>std_msgs</run_depend>
   <run_depend>geometry_msgs</run_depend>
   <run_depend>visualization_msgs</run_depend>
-  <run_depend>ackermann_mux_msgs</run_depend>
+  <!-- <run_depend>ackermann_mux_msgs</run_depend> -->
   <run_depend>diagnostic_updater</run_depend>
 
   <!-- Tests -->

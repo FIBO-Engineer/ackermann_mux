@@ -24,9 +24,9 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    default_config_locks = os.path.join(get_package_share_directory('twist_mux'),
+    default_config_locks = os.path.join(get_package_share_directory('ackermann_mux'),
                                         'config', 'twist_mux_locks.yaml')
-    default_config_topics = os.path.join(get_package_share_directory('twist_mux'),
+    default_config_topics = os.path.join(get_package_share_directory('ackermann_mux'),
                                          'config', 'twist_mux_topics.yaml')
 
     return LaunchDescription([
@@ -47,7 +47,7 @@ def generate_launch_description():
             default_value='False',
             description='Use simulation time'),
         Node(
-            package='twist_mux',
+            package='ackermann_mux',
             executable='twist_mux',
             output='screen',
             remappings={('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))},
@@ -57,7 +57,7 @@ def generate_launch_description():
                 LaunchConfiguration('config_topics')]
         ),
         Node(
-            package='twist_mux',
+            package='ackermann_mux',
             executable='twist_marker',
             output='screen',
             remappings={('/twist', LaunchConfiguration('cmd_vel_out'))},

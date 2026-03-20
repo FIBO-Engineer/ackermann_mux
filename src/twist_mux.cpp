@@ -69,7 +69,7 @@ namespace twist_mux
 constexpr std::chrono::duration<int64_t> TwistMux::DIAGNOSTICS_PERIOD;
 
 TwistMux::TwistMux()
-: Node("twist_mux", "",
+: Node("ackermann_mux", "",
     rclcpp::NodeOptions().allow_undeclared_parameters(
       true).automatically_declare_parameters_from_overrides(true))
 {

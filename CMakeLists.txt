@@ -28,12 +28,12 @@ set(
   "diagnostic_updater"
 )
 
-add_executable(twist_mux
-  src/twist_mux.cpp
-  src/twist_mux_node.cpp
-  src/twist_mux_diagnostics.cpp
+add_executable(ackermann_mux
+  src/ackermann_mux.cpp
+  src/ackermann_mux_node.cpp
+  src/ackermann_mux_diagnostics.cpp
 )
-ament_target_dependencies(twist_mux ${DEPENDENCIES})
+ament_target_dependencies(ackermann_mux ${DEPENDENCIES})
 
 add_executable(twist_marker
   src/twist_marker.cpp
@@ -41,7 +41,7 @@ add_executable(twist_marker
 ament_target_dependencies(twist_marker ${DEPENDENCIES})
 
 install(
-  TARGETS twist_mux twist_marker
+  TARGETS ackermann_mux twist_marker
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}

@@ -47,8 +47,8 @@ def generate_test_description():
         dir_path, 'system_config.yaml'
     )
 
-    twist_mux = launch_ros.actions.Node(
-        package='ackermann_mux', executable='twist_mux',
+    ackermann_mux = launch_ros.actions.Node(
+        package='ackermann_mux', executable='ackermann_mux',
         parameters=[parameters_file], env=proc_env)
 
     publisher = ExecuteProcess(
@@ -57,10 +57,10 @@ def generate_test_description():
     )
 
     # system_blackbox = launch_ros.actions.Node(
-    # package='twist_mux', node_executable='system_blackbox.py', env=proc_env)
+    # package='ackermann_mux', node_executable='system_blackbox.py', env=proc_env)
 
     return launch.LaunchDescription([
-        twist_mux,
+        ackermann_mux,
         publisher,
         # system_blackbox,
         # Start tests right away - no need to wait for anything
@@ -76,7 +76,7 @@ def twist(x=0.0, r=0.0):
     return t
 
 
-class TestTwistMux(unittest.TestCase):
+class TestAckermannMux(unittest.TestCase):
 
     # Maximum time (in seconds) that it may take for a message
     # to be received by the target node.
@@ -150,7 +150,7 @@ class TestTwistMux(unittest.TestCase):
         self._lock2.pub(unlock)
 
         # Wait for previously published messages to time out,
-        # since we aren't restarting twist_mux.
+        # since we aren't restarting ackermann_mux.
         #
         # This sleeping time must be higher than any of the
         # timeouts in system_test_config.yaml.
@@ -172,7 +172,7 @@ class TestTwistMux(unittest.TestCase):
     def test_empty(self):
         try:
             self._vel_cmd()
-            self.fail('twist_mux should not be publishing without any input')
+            self.fail('ackermann_mux should not be publishing without any input')
         except Exception:
             e = sys.exc_info()[0]
             print(e)

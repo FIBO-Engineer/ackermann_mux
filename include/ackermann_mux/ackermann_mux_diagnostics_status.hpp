@@ -28,31 +28,50 @@
 
 /*
  * @author Enrique Fernandez
- * @author Siegfried Gevatter
+ * @author Jeremie Deray
+ * @author Brighten Lee
  */
 
-#ifndef TWIST_MUX__UTILS_HPP_
-#define TWIST_MUX__UTILS_HPP_
+#ifndef ACKERMANN_MUX__ACKERMANN_MUX_DIAGNOSTICS_STATUS_HPP_
+#define ACKERMANN_MUX__ACKERMANN_MUX_DIAGNOSTICS_STATUS_HPP_
 
-// This could be taken from #include <boost/algorithm/clamp.hpp>
-// but it seems that all versions of Boost have it.
+#include <ackermann_mux/ackermann_mux.hpp>
+#include <ackermann_mux/topic_handle.hpp>
 
-/**
- * @brief Clamp a value to the range [min, max]
- * @param x Value
- * @param min Min value of the range [min, max]
- * @param max Max value of the range [min, max]
- * @return Value clamped to the range [min, max]
- */
-template<typename T>
-static T clamp(T x, T min, T max)
+#include <rclcpp/rclcpp.hpp>
+
+#include <memory>
+
+namespace ackermann_mux
 {
-  if (x < min) {
-    x = min;
-  } else if (max < x) {
-    x = max;
-  }
-  return x;
-}
+struct AckermannMuxDiagnosticsStatus
+{
+  typedef std::shared_ptr<AckermannMuxDiagnosticsStatus> Ptr;
+  typedef std::shared_ptr<const AckermannMuxDiagnosticsStatus> ConstPtr;
 
-#endif  // TWIST_MUX__UTILS_HPP_
+  double reading_age;
+  rclcpp::Time last_loop_update;
+  double main_loop_time;
+
+  LockTopicHandle::priority_type priority;
+
+  std::shared_ptr<AckermannMux::velocity_topic_container> velocity_hs;
+  std::shared_ptr<AckermannMux::lock_topic_container> lock_hs;
+
+  AckermannMuxDiagnosticsStatus()
+  : reading_age(0),
+    last_loop_update(rclcpp::Clock().now()),
+    main_loop_time(0),
+    priority(0)
+  {
+    velocity_hs = std::make_shared<AckermannMux::velocity_topic_container>();
+    lock_hs = std::make_shared<AckermannMux::lock_topic_container>();
+  }
+};
+
+typedef AckermannMuxDiagnosticsStatus::Ptr AckermannMuxDiagnosticsStatusPtr;
+typedef AckermannMuxDiagnosticsStatus::ConstPtr AckermannMuxDiagnosticsStatusConstPtr;
+
+}  // namespace ackermann_mux
+
+#endif  // ACKERMANN_MUX__ACKERMANN_MUX_DIAGNOSTICS_STATUS_HPP_

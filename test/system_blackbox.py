@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# twist_mux: system_blackbox.py
+# ackermann_mux: system_blackbox.py
 #
 # Copyright (c) 2020 PAL Robotics S.L. All rights reserved.
 #
@@ -40,7 +40,7 @@ def twist(x=0.0, r=0.0):
     return t
 
 
-class TestTwistMux(unittest.TestCase):
+class TestAckermannMux(unittest.TestCase):
 
     # Maximum time (in seconds) that it may take for a message
     # to be received by the target node.
@@ -76,7 +76,7 @@ class TestTwistMux(unittest.TestCase):
         self._lock2.pub(unlock)
 
         # Wait for previously published messages to time out,
-        # since we aren't restarting twist_mux.
+        # since we aren't restarting ackermann_mux.
         #
         # This sleeping time must be higher than any of the
         # timeouts in system_test_config.yaml.
@@ -96,7 +96,7 @@ class TestTwistMux(unittest.TestCase):
     def test_empty(self):
         try:
             self._vel_cmd()
-            self.fail('twist_mux should not be publishing without any input')
+            self.fail('ackermann_mux should not be publishing without any input')
         except rospy.ROSException:
             pass
 
@@ -132,4 +132,4 @@ if __name__ == '__main__':
     PKG_NAME = 'ackermann_mux'
     TEST_NAME = '%s_system_blackbox_test' % PKG_NAME
     rospy.init_node(TEST_NAME)
-    rostest.rosrun(PKG_NAME, TEST_NAME, TestTwistMux)
+    rostest.rosrun(PKG_NAME, TEST_NAME, TestAckermannMux)

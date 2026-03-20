@@ -32,12 +32,12 @@
  * @author Jeremie Deray
  */
 
-#include <twist_mux/twist_mux.hpp>
-#include <twist_mux/topic_handle.hpp>
-#include <twist_mux/twist_mux_diagnostics.hpp>
-#include <twist_mux/twist_mux_diagnostics_status.hpp>
-#include <twist_mux/utils.hpp>
-#include <twist_mux/params_helpers.hpp>
+#include <ackermann_mux/ackermann_mux.hpp>
+#include <ackermann_mux/topic_handle.hpp>
+#include <ackermann_mux/ackermann_mux_diagnostics.hpp>
+#include <ackermann_mux/ackermann_mux_diagnostics_status.hpp>
+#include <ackermann_mux/utils.hpp>
+#include <ackermann_mux/params_helpers.hpp>
 
 #include <list>
 #include <memory>
@@ -63,19 +63,19 @@ bool hasIncreasedAbsVelocity(
   return (old_speed < new_speed) || (old_steering < new_steering);
 }
 
-namespace twist_mux
+namespace ackermann_mux
 {
 // see e.g. https://stackoverflow.com/a/40691657
-constexpr std::chrono::duration<int64_t> TwistMux::DIAGNOSTICS_PERIOD;
+constexpr std::chrono::duration<int64_t> AckermannMux::DIAGNOSTICS_PERIOD;
 
-TwistMux::TwistMux()
+AckermannMux::AckermannMux()
 : Node("ackermann_mux", "",
     rclcpp::NodeOptions().allow_undeclared_parameters(
       true).automatically_declare_parameters_from_overrides(true))
 {
 }
 
-void TwistMux::init()
+void AckermannMux::init()
 {
   /// Get topics and locks:
   velocity_hs_ = std::make_shared<velocity_topic_container>();
@@ -101,19 +101,19 @@ void TwistMux::init()
     });
 }
 
-void TwistMux::updateDiagnostics()
+void AckermannMux::updateDiagnostics()
 {
   status_->priority = getLockPriority();
   diagnostics_->updateStatus(status_);
 }
 
-void TwistMux::publishTwist(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr & msg)
+void AckermannMux::publishTwist(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr & msg)
 {
   cmd_pub_->publish(*msg);
 }
 
 template<typename T>
-void TwistMux::getTopicHandles(const std::string & param_name, std::list<T> & topic_hs)
+void AckermannMux::getTopicHandles(const std::string & param_name, std::list<T> & topic_hs)
 {
   RCLCPP_DEBUG(get_logger(), "getTopicHandles: %s", param_name.c_str());
 
@@ -145,7 +145,7 @@ void TwistMux::getTopicHandles(const std::string & param_name, std::list<T> & to
   }
 }
 
-int TwistMux::getLockPriority()
+int AckermannMux::getLockPriority()
 {
   LockTopicHandle::priority_type priority = 0;
 
@@ -165,7 +165,7 @@ int TwistMux::getLockPriority()
   return priority;
 }
 
-bool TwistMux::hasPriority(const VelocityTopicHandle & twist)
+bool AckermannMux::hasPriority(const VelocityTopicHandle & twist)
 {
   const auto lock_priority = getLockPriority();
 
@@ -187,4 +187,4 @@ bool TwistMux::hasPriority(const VelocityTopicHandle & twist)
   return twist.getName() == velocity_name;
 }
 
-}  // namespace twist_mux
+}  // namespace ackermann_mux

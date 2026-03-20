@@ -27,44 +27,32 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 /*
- * @author Paul Mathieu
- * @author Jeremie Deray
+ * @author Enrique Fernandez
+ * @author Siegfried Gevatter
  */
 
-#ifndef TWIST_MUX__PARAMS_HELPERS_HPP_
-#define TWIST_MUX__PARAMS_HELPERS_HPP_
+#ifndef ACKERMANN_MUX__UTILS_HPP_
+#define ACKERMANN_MUX__UTILS_HPP_
 
-#include <rclcpp/rclcpp.hpp>
+// This could be taken from #include <boost/algorithm/clamp.hpp>
+// but it seems that all versions of Boost have it.
 
-#include <memory>
-#include <sstream>
-#include <string>
-
-namespace twist_mux
+/**
+ * @brief Clamp a value to the range [min, max]
+ * @param x Value
+ * @param min Min value of the range [min, max]
+ * @param max Max value of the range [min, max]
+ * @return Value clamped to the range [min, max]
+ */
+template<typename T>
+static T clamp(T x, T min, T max)
 {
-class ParamsHelperException : public std::runtime_error
-{
-public:
-  explicit ParamsHelperException(const std::string & what)
-  : std::runtime_error(what)
-  {
+  if (x < min) {
+    x = min;
+  } else if (max < x) {
+    x = max;
   }
-};
-
-template<class T>
-void fetch_param(std::shared_ptr<rclcpp::Node> nh, const std::string & param_name, T & output)
-{
-  rclcpp::Parameter param;
-  if (!nh->get_parameter(param_name, param)) {
-    std::ostringstream err_msg;
-    err_msg << "could not load parameter '" << param_name << "'. (namespace: " <<
-      nh->get_namespace() << ")";
-    throw ParamsHelperException(err_msg.str());
-  }
-
-  output = param.get_value<T>();
+  return x;
 }
 
-}  // namespace twist_mux
-
-#endif  // TWIST_MUX__PARAMS_HELPERS_HPP_
+#endif  // ACKERMANN_MUX__UTILS_HPP_

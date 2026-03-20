@@ -39,9 +39,9 @@ def generate_launch_description():
             default_value=default_config_topics,
             description='Default topics config file'),
         DeclareLaunchArgument(
-            'cmd_vel_out',
-            default_value='ackermann_mux/cmd_vel',
-            description='cmd vel output topic'),
+            'ackermann_vel_out',
+            default_value='ackermann_mux/ackermann_vel',
+            description='ackermann vel output topic'),
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='False',
@@ -50,7 +50,7 @@ def generate_launch_description():
             package='ackermann_mux',
             executable='ackermann_mux',
             output='screen',
-            remappings={('/cmd_vel_out', LaunchConfiguration('cmd_vel_out'))},
+            remappings={('/ackermann_vel_out', LaunchConfiguration('ackermann_vel_out'))},
             parameters=[
                 {'use_sim_time': LaunchConfiguration('use_sim_time')},
                 LaunchConfiguration('config_locks'),
@@ -60,7 +60,7 @@ def generate_launch_description():
             package='ackermann_mux',
             executable='twist_marker',
             output='screen',
-            remappings={('/twist', LaunchConfiguration('cmd_vel_out'))},
+            remappings={('/twist', LaunchConfiguration('ackermann_vel_out'))},
             parameters=[{
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
                 'frame_id': 'base_link',

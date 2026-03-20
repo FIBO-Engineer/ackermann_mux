@@ -90,7 +90,7 @@ class TestAckermannMux(unittest.TestCase):
         time.sleep(cls.MESSAGE_TIMEOUT)
         # TODO wait_for_msg-like functionnality not yet available
         # https://github.com/ros2/rclcpp/issues/520
-        return rospy.wait_for_message('cmd_vel_out', AckermannDrive,
+        return rospy.wait_for_message('ackermann_vel_out', AckermannDrive,
                                       timeout=cls.MESSAGE_TIMEOUT)
 
     def test_empty(self):

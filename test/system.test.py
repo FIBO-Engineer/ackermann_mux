@@ -48,7 +48,7 @@ def generate_test_description():
     )
 
     twist_mux = launch_ros.actions.Node(
-        package='twist_mux', executable='twist_mux',
+        package='ackermann_mux', executable='twist_mux',
         parameters=[parameters_file], env=proc_env)
 
     publisher = ExecuteProcess(

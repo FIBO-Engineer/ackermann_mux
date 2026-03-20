@@ -129,7 +129,7 @@ class TestTwistMux(unittest.TestCase):
 
 if __name__ == '__main__':
     import rostest
-    PKG_NAME = 'twist_mux'
+    PKG_NAME = 'ackermann_mux'
     TEST_NAME = '%s_system_blackbox_test' % PKG_NAME
     rospy.init_node(TEST_NAME)
     rostest.rosrun(PKG_NAME, TEST_NAME, TestTwistMux)

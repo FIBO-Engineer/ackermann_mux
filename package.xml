@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>twist_mux</name>
+  <name>ackermann_mux</name>
   <version>4.3.0</version>
   <description>
       Twist multiplexer, which multiplex several velocity commands (topics) and
       allows to priorize or disable them (locks).
   </description>
 
-  <maintainer email="bence.magyar.robotics@gmail.com">Bence Magyar</maintainer>
+  <maintainer email="norawit.nangs@kmutt.ac.th">Norawit Nangsue</maintainer>
   <license>Apache License 2.0</license>
 
   <author email="shlee@gaitech.co.kr">Brighten Lee</author>

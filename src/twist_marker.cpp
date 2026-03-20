@@ -140,9 +140,9 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto twist_mux_node = std::make_shared<TwistMarkerPublisher>();
+  auto twist_marker_node = std::make_shared<TwistMarkerPublisher>();
 
-  rclcpp::spin(twist_mux_node);
+  rclcpp::spin(twist_marker_node);
 
   rclcpp::shutdown();
 

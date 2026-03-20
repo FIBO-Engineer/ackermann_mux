@@ -32,8 +32,8 @@
  * @author Jeremie Deray
  */
 
-#ifndef TWIST_MUX__TWIST_MUX_HPP_
-#define TWIST_MUX__TWIST_MUX_HPP_
+#ifndef ACKERMANN_MUX__ACKERMANN_MUX_HPP_
+#define ACKERMANN_MUX__ACKERMANN_MUX_HPP_
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
@@ -45,19 +45,19 @@
 
 using std::chrono_literals::operator""s;
 
-namespace twist_mux
+namespace ackermann_mux
 {
 // Forwarding declarations:
-class TwistMuxDiagnostics;
-struct TwistMuxDiagnosticsStatus;
+class AckermannMuxDiagnostics;
+struct AckermannMuxDiagnosticsStatus;
 class VelocityTopicHandle;
 class LockTopicHandle;
 
 /**
- * @brief The TwistMux class implements a top-level twist multiplexer module
+ * @brief The AckermannMux class implements a top-level twist multiplexer module
  * that priorize different velocity command topic inputs according to locks.
  */
-class TwistMux : public rclcpp::Node
+class AckermannMux : public rclcpp::Node
 {
 public:
   template<typename T>
@@ -66,8 +66,8 @@ public:
   using velocity_topic_container = handle_container<VelocityTopicHandle>;
   using lock_topic_container = handle_container<LockTopicHandle>;
 
-  TwistMux();
-  ~TwistMux() = default;
+  AckermannMux();
+  ~AckermannMux() = default;
 
   void init();
 
@@ -78,8 +78,8 @@ public:
   void updateDiagnostics();
 
 protected:
-  typedef TwistMuxDiagnostics diagnostics_type;
-  typedef TwistMuxDiagnosticsStatus status_type;
+  typedef AckermannMuxDiagnostics diagnostics_type;
+  typedef AckermannMuxDiagnosticsStatus status_type;
 
   rclcpp::TimerBase::SharedPtr diagnostics_timer_;
 
@@ -107,6 +107,6 @@ protected:
   std::shared_ptr<status_type> status_;
 };
 
-}  // namespace twist_mux
+}  // namespace ackermann_mux
 
-#endif  // TWIST_MUX__TWIST_MUX_HPP_
+#endif  // ACKERMANN_MUX__ACKERMANN_MUX_HPP_

@@ -33,21 +33,21 @@
  * @author Brighten Lee
  */
 
-#ifndef TWIST_MUX__TOPIC_HANDLE_HPP_
-#define TWIST_MUX__TOPIC_HANDLE_HPP_
+#ifndef ACKERMANN_MUX__TOPIC_HANDLE_HPP_
+#define ACKERMANN_MUX__TOPIC_HANDLE_HPP_
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include <ackermann_msgs/msg/ackermann_drive.hpp>
 
-#include <twist_mux/utils.hpp>
-#include <twist_mux/twist_mux.hpp>
+#include <ackermann_mux/utils.hpp>
+#include <ackermann_mux/ackermann_mux.hpp>
 
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace twist_mux
+namespace ackermann_mux
 {
 template<typename T>
 class TopicHandle_
@@ -75,7 +75,7 @@ public:
    */
   TopicHandle_(
     const std::string & name, const std::string & topic, const rclcpp::Duration & timeout,
-    priority_type priority, TwistMux * mux)
+    priority_type priority, AckermannMux * mux)
   : name_(name),
     topic_(topic),
     timeout_(timeout),
@@ -147,7 +147,7 @@ protected:
   priority_type priority_;
 
 protected:
-  TwistMux * mux_;
+  AckermannMux * mux_;
 
   rclcpp::Time stamp_;
   T msg_;
@@ -166,7 +166,7 @@ public:
 
   VelocityTopicHandle(
     const std::string & name, const std::string & topic, const rclcpp::Duration & timeout,
-    priority_type priority, TwistMux * mux)
+    priority_type priority, AckermannMux * mux)
   : base_type(name, topic, timeout, priority, mux)
   {
     subscriber_ = mux_->create_subscription<ackermann_msgs::msg::AckermannDrive>(
@@ -208,7 +208,7 @@ public:
 
   LockTopicHandle(
     const std::string & name, const std::string & topic, const rclcpp::Duration & timeout,
-    priority_type priority, TwistMux * mux)
+    priority_type priority, AckermannMux * mux)
   : base_type(name, topic, timeout, priority, mux)
   {
     subscriber_ = mux_->create_subscription<std_msgs::msg::Bool>(
@@ -232,6 +232,6 @@ public:
   }
 };
 
-}  // namespace twist_mux
+}  // namespace ackermann_mux
 
-#endif  // TWIST_MUX__TOPIC_HANDLE_HPP_
+#endif  // ACKERMANN_MUX__TOPIC_HANDLE_HPP_

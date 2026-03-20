@@ -32,27 +32,27 @@
  * @author Brighten Lee
  */
 
-#ifndef TWIST_MUX__TWIST_MUX_DIAGNOSTICS_HPP_
-#define TWIST_MUX__TWIST_MUX_DIAGNOSTICS_HPP_
+#ifndef ACKERMANN_MUX__ACKERMANN_MUX_DIAGNOSTICS_HPP_
+#define ACKERMANN_MUX__ACKERMANN_MUX_DIAGNOSTICS_HPP_
 
-#include <twist_mux/twist_mux_diagnostics_status.hpp>
+#include <ackermann_mux/ackermann_mux_diagnostics_status.hpp>
 
 #include <diagnostic_updater/diagnostic_updater.hpp>
 
 #include <memory>
 
-namespace twist_mux
+namespace ackermann_mux
 {
-class TwistMuxDiagnostics
+class AckermannMuxDiagnostics
 {
 public:
-  typedef TwistMuxDiagnosticsStatus status_type;
+  typedef AckermannMuxDiagnosticsStatus status_type;
 
   static constexpr double MAIN_LOOP_TIME_MIN = 0.2;   // [s]
   static constexpr double READING_AGE_MIN = 3.0;     // [s]
 
-  explicit TwistMuxDiagnostics(TwistMux * mux);
-  virtual ~TwistMuxDiagnostics() = default;
+  explicit AckermannMuxDiagnostics(AckermannMux * mux);
+  virtual ~AckermannMuxDiagnostics() = default;
 
   void diagnostics(diagnostic_updater::DiagnosticStatusWrapper & stat);
 
@@ -74,6 +74,6 @@ private:
   std::shared_ptr<diagnostic_updater::Updater> diagnostic_;
   std::shared_ptr<status_type> status_;
 };
-}  // namespace twist_mux
+}  // namespace ackermann_mux
 
-#endif  // TWIST_MUX__TWIST_MUX_DIAGNOSTICS_HPP_
+#endif  // ACKERMANN_MUX__ACKERMANN_MUX_DIAGNOSTICS_HPP_

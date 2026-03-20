@@ -27,6 +27,7 @@
 import rclpy
 import numpy as np
 
+from ackermann_msgs.msg import AckermannDrive
 from geometry_msgs.msg import Twist
 from rclpy.action import ActionServer
 from rclpy.executors import ExternalShutdownException
@@ -136,18 +137,17 @@ class VelocityControl:
         return True
 
     def scale_twist(self, cmd):
-        twist = Twist()
+        ackermann_cmd = AckermannDrive()
         if self.validate_twist(cmd):
             if cmd.linear.x >= 0:
-                twist.linear.x = self._forward(
+                ackermann_cmd.speed = self._forward(
                     cmd.linear.x, self._current_step)
             else:
-                twist.linear.x = self._backward(
+                ackermann_cmd.speed = self._backward(
                     cmd.linear.x, self._current_step)
-            twist.linear.y = self._lateral(cmd.linear.y, self._current_step)
-            twist.angular.z = self._angular(
+            ackermann_cmd.steering_angle = self._angular(
                 cmd.angular.z, self._current_angular_step)
-        return twist
+        return ackermann_cmd
 
     def increase_turbo(self):
         if self._current_step < self._num_steps.value:
@@ -225,7 +225,7 @@ class JoystickRelay(Node):
 
         self._marker = TextMarker(self, 0.5, 2.0)
 
-        self._pub_cmd = self.create_publisher(Twist, 'joy_vel_out', 1)
+        self._pub_cmd = self.create_publisher(AckermannDrive, 'joy_vel_out', 1)
         self._subscriber = self.create_subscription(
             Twist, 'joy_vel_in', self._forward_cmd, 1)
 
@@ -278,7 +278,7 @@ class JoystickRelay(Node):
 
         # Reset velocity to 0:
         if self._current_priority.data:
-            self._pub_cmd.publish(Twist())
+            self._pub_cmd.publish(AckermannDrive())
 
     def _timer_callback(self):
         self._marker.update(self._current_priority.data)

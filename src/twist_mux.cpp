@@ -45,22 +45,22 @@
 
 /**
  * @brief hasIncreasedAbsVelocity Check if the absolute velocity has increased
- * in any of the components: linear (abs(x)) or angular (abs(yaw))
- * @param old_twist Old velocity
- * @param new_twist New velocity
+ * in any of the components: speed or steering_angle
+ * @param old_cmd Old velocity command
+ * @param new_cmd New velocity command
  * @return true is any of the absolute velocity components has increased
  */
 bool hasIncreasedAbsVelocity(
-  const geometry_msgs::msg::Twist & old_twist,
-  const geometry_msgs::msg::Twist & new_twist)
+  const ackermann_msgs::msg::AckermannDrive & old_cmd,
+  const ackermann_msgs::msg::AckermannDrive & new_cmd)
 {
-  const auto old_linear_x = std::abs(old_twist.linear.x);
-  const auto new_linear_x = std::abs(new_twist.linear.x);
+  const auto old_speed = std::abs(old_cmd.speed);
+  const auto new_speed = std::abs(new_cmd.speed);
 
-  const auto old_angular_z = std::abs(old_twist.angular.z);
-  const auto new_angular_z = std::abs(new_twist.angular.z);
+  const auto old_steering = std::abs(old_cmd.steering_angle);
+  const auto new_steering = std::abs(new_cmd.steering_angle);
 
-  return (old_linear_x < new_linear_x) || (old_angular_z < new_angular_z);
+  return (old_speed < new_speed) || (old_steering < new_steering);
 }
 
 namespace twist_mux
@@ -85,7 +85,7 @@ void TwistMux::init()
 
   /// Publisher for output topic:
   cmd_pub_ =
-    this->create_publisher<geometry_msgs::msg::Twist>(
+    this->create_publisher<ackermann_msgs::msg::AckermannDrive>(
     "cmd_vel_out",
     rclcpp::QoS(rclcpp::KeepLast(1)));
 
@@ -107,7 +107,7 @@ void TwistMux::updateDiagnostics()
   diagnostics_->updateStatus(status_);
 }
 
-void TwistMux::publishTwist(const geometry_msgs::msg::Twist::ConstSharedPtr & msg)
+void TwistMux::publishTwist(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr & msg)
 {
   cmd_pub_->publish(*msg);
 }

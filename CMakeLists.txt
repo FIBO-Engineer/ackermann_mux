@@ -13,6 +13,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(ackermann_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(diagnostic_updater REQUIRED)
@@ -23,6 +24,7 @@ set(
   DEPENDENCIES
   "rclcpp"
   "std_msgs"
+  "ackermann_msgs"
   "geometry_msgs"
   "visualization_msgs"
   "diagnostic_updater"

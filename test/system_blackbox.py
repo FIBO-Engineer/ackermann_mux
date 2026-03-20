@@ -27,16 +27,16 @@ import rospy
 import time
 
 from std_msgs.msg import Bool
-from geometry_msgs.msg import Twist
+from ackermann_msgs.msg import AckermannDrive
 
 from rate_publishers import RatePublishers, TimeoutManager
 
 
 def twist(x=0.0, r=0.0):
-    """Return a Twist for the given linear and rotation speed."""
-    t = Twist()
-    t.linear.x = x
-    t.angular.z = r
+    """Return an AckermannDrive for the given speed and steering angle."""
+    t = AckermannDrive()
+    t.speed = x
+    t.steering_angle = r
     return t
 
 
@@ -52,9 +52,9 @@ class TestTwistMux(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._publishers = RatePublishers()
-        cls._vel1 = cls._publishers.add_topic('vel_1', Twist)
-        cls._vel2 = cls._publishers.add_topic('vel_2', Twist)
-        cls._vel3 = cls._publishers.add_topic('vel_3', Twist)
+        cls._vel1 = cls._publishers.add_topic('vel_1', AckermannDrive)
+        cls._vel2 = cls._publishers.add_topic('vel_2', AckermannDrive)
+        cls._vel3 = cls._publishers.add_topic('vel_3', AckermannDrive)
 
         cls._lock1 = cls._publishers.add_topic('lock_1', Bool)
         cls._lock2 = cls._publishers.add_topic('lock_2', Bool)
@@ -90,7 +90,7 @@ class TestTwistMux(unittest.TestCase):
         time.sleep(cls.MESSAGE_TIMEOUT)
         # TODO wait_for_msg-like functionnality not yet available
         # https://github.com/ros2/rclcpp/issues/520
-        return rospy.wait_for_message('cmd_vel_out', Twist,
+        return rospy.wait_for_message('cmd_vel_out', AckermannDrive,
                                       timeout=cls.MESSAGE_TIMEOUT)
 
     def test_empty(self):

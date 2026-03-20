@@ -31,7 +31,7 @@ from rclpy.executors import MultiThreadedExecutor
 import rclpy
 
 from std_msgs.msg import Bool
-from geometry_msgs.msg import Twist
+from ackermann_msgs.msg import AckermannDrive
 
 sys.path.append(os.path.abspath(os.path.dirname(os.path.realpath(__file__))))
 
@@ -69,10 +69,10 @@ def generate_test_description():
 
 
 def twist(x=0.0, r=0.0):
-    """Return a Twist for the given linear and rotation speed."""
-    t = Twist()
-    t.linear.x = x
-    t.angular.z = r
+    """Return an AckermannDrive for the given speed and steering angle."""
+    t = AckermannDrive()
+    t.speed = x
+    t.steering_angle = r
     return t
 
 
@@ -96,7 +96,7 @@ class TestTwistMux(unittest.TestCase):
 
         # Aim at emulating a 'wait_for_msg'
         cls._subscription = cls.node.create_subscription(
-            Twist, 'cmd_vel_out', cls._cb, 1)
+            AckermannDrive, 'cmd_vel_out', cls._cb, 1)
         cls._msg = None
 
         cls.executor = MultiThreadedExecutor(
@@ -104,9 +104,9 @@ class TestTwistMux(unittest.TestCase):
         cls.executor.add_node(cls.node)
 
         cls._publishers = RatePublishers(cls.context)
-        cls._vel1 = cls._publishers.add_topic('vel_1', Twist)
-        cls._vel2 = cls._publishers.add_topic('vel_2', Twist)
-        cls._vel3 = cls._publishers.add_topic('vel_3', Twist)
+        cls._vel1 = cls._publishers.add_topic('vel_1', AckermannDrive)
+        cls._vel2 = cls._publishers.add_topic('vel_2', AckermannDrive)
+        cls._vel3 = cls._publishers.add_topic('vel_3', AckermannDrive)
 
         cls._lock1 = cls._publishers.add_topic('lock_1', Bool)
         cls._lock2 = cls._publishers.add_topic('lock_2', Bool)

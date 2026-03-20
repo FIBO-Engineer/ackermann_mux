@@ -38,7 +38,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
-#include <geometry_msgs/msg/twist.hpp>
+#include <ackermann_msgs/msg/ackermann_drive.hpp>
 
 #include <twist_mux/utils.hpp>
 #include <twist_mux/twist_mux.hpp>
@@ -153,10 +153,10 @@ protected:
   T msg_;
 };
 
-class VelocityTopicHandle : public TopicHandle_<geometry_msgs::msg::Twist>
+class VelocityTopicHandle : public TopicHandle_<ackermann_msgs::msg::AckermannDrive>
 {
 private:
-  typedef TopicHandle_<geometry_msgs::msg::Twist> base_type;
+  typedef TopicHandle_<ackermann_msgs::msg::AckermannDrive> base_type;
 
   // https://index.ros.org/doc/ros2/About-Quality-of-Service-Settings
   // rmw_qos_profile_t twist_qos_profile = rmw_qos_profile_sensor_data;
@@ -169,13 +169,9 @@ public:
     priority_type priority, TwistMux * mux)
   : base_type(name, topic, timeout, priority, mux)
   {
-    subscriber_ = mux_->create_subscription<geometry_msgs::msg::Twist>(
+    subscriber_ = mux_->create_subscription<ackermann_msgs::msg::AckermannDrive>(
       topic_, rclcpp::SystemDefaultsQoS(),
       std::bind(&VelocityTopicHandle::callback, this, std::placeholders::_1));
-
-    // subscriber_ = nh_.create_subscription<geometry_msgs::msg::Twist>(
-    //    topic_, twist_qos_profile,
-    //  std::bind(&VelocityTopicHandle::callback, this, std::placeholders::_1));
   }
 
   bool isMasked(priority_type lock_priority) const
@@ -184,7 +180,7 @@ public:
     return hasExpired() || (getPriority() < lock_priority);
   }
 
-  void callback(const geometry_msgs::msg::Twist::ConstSharedPtr msg)
+  void callback(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr msg)
   {
     stamp_ = mux_->now();
     msg_ = *msg;

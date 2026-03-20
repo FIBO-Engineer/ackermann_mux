@@ -21,6 +21,7 @@ import launch_testing
 import rclpy
 import threading
 
+from ackermann_msgs.msg import AckermannDrive
 from geometry_msgs.msg import Twist
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -79,7 +80,7 @@ class TestJoystickRelay(unittest.TestCase):
     @classmethod
     def setUp(self):
         self.sub = self.node.create_subscription(
-            Twist, 'joy_vel_out', self._sub_callback, QoSProfile(depth=1))
+            AckermannDrive, 'joy_vel_out', self._sub_callback, QoSProfile(depth=1))
         self.timer = self.node.create_timer(0.1, self._pub_callback)
         self.executor = SingleThreadedExecutor()
         self.executor.add_node(self.node)
@@ -100,7 +101,7 @@ class TestJoystickRelay(unittest.TestCase):
 
     @classmethod
     def _sub_callback(self, msg):
-        self.current_twist = msg
+        self.current_cmd = msg
 
     @classmethod
     def _get_current_vel(self, commanded_vel, current_step):
@@ -114,12 +115,11 @@ class TestJoystickRelay(unittest.TestCase):
     @classmethod
     def _reset_and_wait_twist(self):
         self.twist_msg = Twist()
-        self.current_twist = Twist()
+        self.current_cmd = AckermannDrive()
 
         # wait until all is reset
-        while (self.current_twist.linear.x != 0.0 or
-               self.current_twist.linear.y != 0.0 or
-               self.current_twist.angular.z != 0.0):
+        while (self.current_cmd.speed != 0.0 or
+               self.current_cmd.steering_angle != 0.0):
             pass
 
     @classmethod
@@ -129,9 +129,8 @@ class TestJoystickRelay(unittest.TestCase):
         self.twist_msg.angular.z = angular_z
 
         # wait until all is set
-        while (self.current_twist.linear.x == 0.0 or
-               self.current_twist.linear.y == 0.0 or
-               self.current_twist.angular.z == 0.0):
+        while (self.current_cmd.speed == 0.0 or
+               self.current_cmd.steering_angle == 0.0):
             pass
 
     def test_joy_priority_action(self):
@@ -165,13 +164,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP))
 
     def test_turbo_increase(self):
@@ -183,13 +179,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP + 1))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP + 1))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP + 1))
 
     def test_turbo_decrease(self):
@@ -201,13 +194,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP - 1))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP - 1))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP - 1))
 
     def test_turbo_angular_increase(self):
@@ -220,13 +210,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP + 1))
 
     def test_turbo_angular_decrease(self):
@@ -238,13 +225,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP - 1))
 
     def test_joy_turbo_reset(self):
@@ -256,13 +240,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP - 1))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP - 1))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP - 1))
 
         self._reset_and_wait_twist()
@@ -275,13 +256,10 @@ class TestJoystickRelay(unittest.TestCase):
         self._set_and_wait_twist(0.5, 0.8, 1.0)
 
         self.assertEqual(
-            self.current_twist.linear.x,
+            self.current_cmd.speed,
             self._get_current_vel(self.twist_msg.linear.x, INIT_STEP))
         self.assertEqual(
-            self.current_twist.linear.y,
-            self._get_current_vel(self.twist_msg.linear.y, INIT_STEP))
-        self.assertEqual(
-            self.current_twist.angular.z,
+            self.current_cmd.steering_angle,
             self._get_current_vel(self.twist_msg.angular.z, INIT_STEP))
 
 

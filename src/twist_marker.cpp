@@ -33,7 +33,7 @@
  */
 
 #include <rclcpp/rclcpp.hpp>
-#include <geometry_msgs/msg/twist.hpp>
+#include <ackermann_msgs/msg/ackermann_drive.hpp>
 #include <visualization_msgs/msg/marker.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
@@ -73,17 +73,10 @@ public:
     marker_.points[1].z = 0.01;
   }
 
-  void update(const geometry_msgs::msg::Twist & twist)
+  void update(const ackermann_msgs::msg::AckermannDrive & cmd)
   {
-    using std::abs;
-
-    marker_.points[1].x = twist.linear.x;
-
-    if (abs(twist.linear.y) > abs(twist.angular.z)) {
-      marker_.points[1].y = twist.linear.y;
-    } else {
-      marker_.points[1].y = twist.angular.z;
-    }
+    marker_.points[1].x = cmd.speed;
+    marker_.points[1].y = cmd.steering_angle;
   }
 
   const visualization_msgs::msg::Marker & getMarker()
@@ -119,7 +112,7 @@ public:
 
     marker_ = std::make_shared<TwistMarker>(frame_id, scale, z);
 
-    sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
+    sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDrive>(
       "twist", rclcpp::SystemDefaultsQoS(),
       std::bind(&TwistMarkerPublisher::callback, this, std::placeholders::_1));
 
@@ -129,15 +122,15 @@ public:
       rclcpp::QoS(rclcpp::KeepLast(1)));
   }
 
-  void callback(const geometry_msgs::msg::Twist::ConstSharedPtr twist)
+  void callback(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr cmd)
   {
-    marker_->update(*twist);
+    marker_->update(*cmd);
 
     pub_->publish(marker_->getMarker());
   }
 
 private:
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr sub_;
+  rclcpp::Subscription<ackermann_msgs::msg::AckermannDrive>::SharedPtr sub_;
   rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_;
 
   std::shared_ptr<TwistMarker> marker_ = nullptr;

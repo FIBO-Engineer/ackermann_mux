@@ -37,7 +37,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
-#include <geometry_msgs/msg/twist.hpp>
+#include <ackermann_msgs/msg/ackermann_drive.hpp>
 
 #include <list>
 #include <memory>
@@ -73,7 +73,7 @@ public:
 
   bool hasPriority(const VelocityTopicHandle & twist);
 
-  void publishTwist(const geometry_msgs::msg::Twist::ConstSharedPtr & msg);
+  void publishTwist(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr & msg);
 
   void updateDiagnostics();
 
@@ -94,9 +94,9 @@ protected:
   std::shared_ptr<velocity_topic_container> velocity_hs_;
   std::shared_ptr<lock_topic_container> lock_hs_;
 
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_pub_;
+  rclcpp::Publisher<ackermann_msgs::msg::AckermannDrive>::SharedPtr cmd_pub_;
 
-  geometry_msgs::msg::Twist last_cmd_;
+  ackermann_msgs::msg::AckermannDrive last_cmd_;
 
   template<typename T>
   void getTopicHandles(const std::string & param_name, handle_container<T> & topic_hs);

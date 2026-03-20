@@ -13,7 +13,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
+find_package(ackermann_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(diagnostic_updater REQUIRED)
 
@@ -23,7 +23,7 @@ set(
   DEPENDENCIES
   "rclcpp"
   "std_msgs"
-  "geometry_msgs"
+  "ackermann_msgs"
   "visualization_msgs"
   "diagnostic_updater"
 )
@@ -47,11 +47,6 @@ install(
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-install(
-  PROGRAMS scripts/joystick_relay.py
-  DESTINATION lib/${PROJECT_NAME}
-)
-
 foreach(dir launch config)
   install(DIRECTORY ${dir}/
     DESTINATION share/${PROJECT_NAME}/${dir})
@@ -64,7 +59,6 @@ install(
 
 if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake)
-  add_launch_test(test/test_joystick_relay.py)
 endif()
 
 ament_export_include_directories(include)

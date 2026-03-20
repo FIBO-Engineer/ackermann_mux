@@ -28,8 +28,6 @@ def generate_launch_description():
                                         'config', 'twist_mux_locks.yaml')
     default_config_topics = os.path.join(get_package_share_directory('twist_mux'),
                                          'config', 'twist_mux_topics.yaml')
-    default_config_joystick = os.path.join(get_package_share_directory('twist_mux'),
-                                           'config', 'joystick.yaml')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -40,10 +38,6 @@ def generate_launch_description():
             'config_topics',
             default_value=default_config_topics,
             description='Default topics config file'),
-        DeclareLaunchArgument(
-            'config_joy',
-            default_value=default_config_joystick,
-            description='Default joystick config file'),
         DeclareLaunchArgument(
             'cmd_vel_out',
             default_value='twist_mux/cmd_vel',
@@ -72,13 +66,4 @@ def generate_launch_description():
                 'frame_id': 'base_link',
                 'scale': 1.0,
                 'vertical_position': 2.0}]),
-        Node(
-            package='twist_mux',
-            executable='joystick_relay.py',
-            output='screen',
-            remappings={('joy_vel_in', 'input_joy/cmd_vel'),
-                        ('joy_vel_out', 'joy_vel')},
-            parameters=[
-                {'use_sim_time': LaunchConfiguration('use_sim_time')},
-                LaunchConfiguration('config_joy')])
     ])

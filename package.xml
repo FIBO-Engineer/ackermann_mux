@@ -8,6 +8,7 @@
       allows to priorize or disable them (locks).
   </description>
 
+  <maintainer email="bence.magyar.robotics@gmail.com">Bence Magyar</maintainer>
   <maintainer email="norawit.nangs@kmutt.ac.th">Norawit Nangsue</maintainer>
   <license>Apache License 2.0</license>
 

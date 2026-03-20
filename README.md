@@ -44,7 +44,7 @@ Launch arguments:
 |---|---|---|
 | `config_topics` | `config/twist_mux_topics.yaml` | Velocity topic definitions |
 | `config_locks` | `config/twist_mux_locks.yaml` | Lock topic definitions |
-| `cmd_vel_out` | `twist_mux/cmd_vel` | Output topic name |
+| `ackermann_vel_out` | `ackermann_mux/ackermann_vel` | Output topic name |
 | `use_sim_time` | `False` | Use simulation clock |
 
 ### Topic configuration (`config/twist_mux_topics.yaml`)
@@ -86,7 +86,7 @@ When a lock topic publishes `True`, all velocity sources with a priority **lower
 
 | Topic | Type | Description |
 |---|---|---|
-| `cmd_vel_out` (remappable) | `ackermann_msgs/AckermannDrive` | Multiplexed output command |
+| `ackermann_vel_out` (remappable) | `ackermann_msgs/AckermannDrive` | Multiplexed output command |
 
 ## Authors
 

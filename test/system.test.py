@@ -96,7 +96,7 @@ class TestAckermannMux(unittest.TestCase):
 
         # Aim at emulating a 'wait_for_msg'
         cls._subscription = cls.node.create_subscription(
-            AckermannDrive, 'cmd_vel_out', cls._cb, 1)
+            AckermannDrive, 'ackermann_vel_out', cls._cb, 1)
         cls._msg = None
 
         cls.executor = MultiThreadedExecutor(

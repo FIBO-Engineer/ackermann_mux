@@ -75,6 +75,8 @@ public:
 
   void publishTwist(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr & msg);
 
+  void publishZero();
+
   void updateDiagnostics();
 
 protected:

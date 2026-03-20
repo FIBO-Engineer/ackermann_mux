@@ -229,6 +229,9 @@ public:
   {
     stamp_ = mux_->now();
     msg_ = *msg;
+    if (msg->data) {
+      mux_->publishZero();
+    }
   }
 };
 

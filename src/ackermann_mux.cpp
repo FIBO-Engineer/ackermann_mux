@@ -109,7 +109,15 @@ void AckermannMux::updateDiagnostics()
 
 void AckermannMux::publishTwist(const ackermann_msgs::msg::AckermannDrive::ConstSharedPtr & msg)
 {
+  last_cmd_ = *msg;
   cmd_pub_->publish(*msg);
+}
+
+void AckermannMux::publishZero()
+{
+  ackermann_msgs::msg::AckermannDrive zero;
+  zero.steering_angle = last_cmd_.steering_angle;
+  cmd_pub_->publish(zero);
 }
 
 template<typename T>
